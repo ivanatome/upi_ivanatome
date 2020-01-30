@@ -29,18 +29,22 @@ class TestKorisnici(unittest.TestCase):
             Korisnici("","","","","","955","","","","","","","")
 
     def test_baza_komentar(self):
-        KOMENTIRANJE(1000,"nekikomentar",900)
+        KOMENTIRANJE(1002,"nekikomentar",502)
 
         con=sqlite3.connect('data\\drustvenamreza.db')
         cur=con.cursor()
 
         idd=cur.execute('SELECT * FROM sqlite_sequence').fetchall()
-        seq=idd[0][1]
-        row=cur.execute('SELECT * FROM komentar WHERE id_komentara=(?)',(seq,)).fetchone()
-        self.assertEqual(row,(seq,'nekikomentar', 1000, 900))
         
-
-        cur.execute('DELETE from komentar WHERE id_objave=(?)',(1000,))
+        seq=idd[2][1]
+        print("SEKVENCA ",seq)
+        row=cur.execute('SELECT * FROM komentar WHERE id_komentara=(?)',(seq,)).fetchone()
+        print(row)
+        self.assertEqual(row,(seq,'nekikomentar', 1002, 502))
+        
+        
+        cur.execute('DELETE FROM komentar WHERE id_komentara=(?)',(seq,))
+        con.commit()
 
     
     def test_baza_objava(self):
@@ -51,7 +55,11 @@ class TestKorisnici(unittest.TestCase):
 
         v=cur.execute('SELECT * from objava where id_objave=(?)',(idObjave,)).fetchone()
         self.assertEqual(v,(idObjave, 500, 'objava', '20:45h', 5, 11))
+
+        con=sqlite3.connect('data\\drustvenamreza.db')
+        cur=con.cursor()
         cur.execute('DELETE from objava WHERE id_objave=(?)',(idObjave,))
+        con.commit()
 
 unittest.main()
 

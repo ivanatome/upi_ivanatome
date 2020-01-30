@@ -69,7 +69,6 @@ def TRECA(ime,sifra):
     except Exception as e:
         print("Greška ",e)
         con.rollback
-    #con.close()
     return(nekako_drukcije)
 
 def MOJIPOSTOVI(var):
